@@ -1,14 +1,12 @@
 import express from 'express';
 import puppeteer from 'puppeteer';
 
-console.log(process.env.PORT)
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-app.post('/generate-pdf', async  (req, res) => {
+app.post('/generate-pdf', async (req, res) => {
     const data = req.body;
     const url = data.url;
     if (!url) res.status(400).send('No url');
@@ -18,7 +16,6 @@ app.post('/generate-pdf', async  (req, res) => {
     });
 
     const page = await browser.newPage();
-    // await page.setContent(url, { waitUntil: 'domcontentloaded' });
     await page.goto(url, { waitUntil: 'domcontentloaded' });
 
     const pdfBuffer = await page.pdf({
